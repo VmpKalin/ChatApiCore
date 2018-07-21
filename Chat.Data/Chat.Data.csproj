@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\IEntities\" />
+    <Folder Include="Interfaces\IManages\" />
+    <Folder Include="Models\Entities\" />
+    <Folder Include="Models\DTO\" />
+    <Folder Include="Models\AdditionModels\" />
+  </ItemGroup>
+
+</Project>

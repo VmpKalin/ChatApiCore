@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketServerChat", "WebSocketServerChat\WebSocketServerChat.csproj", "{07AF0AF5-10BB-4288-97F7-19543E3F79D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Logic", "Chat.Logic\Chat.Logic.csproj", "{BF5E5CB6-7C70-4FB4-8329-62E5EC7F181B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Data", "Chat.Data\Chat.Data.csproj", "{B1625B5A-021C-4EA3-BF93-D2931E4305C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{07AF0AF5-10BB-4288-97F7-19543E3F79D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07AF0AF5-10BB-4288-97F7-19543E3F79D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07AF0AF5-10BB-4288-97F7-19543E3F79D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF5E5CB6-7C70-4FB4-8329-62E5EC7F181B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF5E5CB6-7C70-4FB4-8329-62E5EC7F181B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF5E5CB6-7C70-4FB4-8329-62E5EC7F181B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF5E5CB6-7C70-4FB4-8329-62E5EC7F181B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1625B5A-021C-4EA3-BF93-D2931E4305C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1625B5A-021C-4EA3-BF93-D2931E4305C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1625B5A-021C-4EA3-BF93-D2931E4305C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1625B5A-021C-4EA3-BF93-D2931E4305C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
