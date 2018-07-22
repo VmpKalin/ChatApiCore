@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net.WebSockets;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Chat.Logic.Manages
 {
-    public class WebSocketChatManager
+    public class WebSocketChatManager : WebSocketChatManagerBase
     {
-        //private 
-
-
-
-
+        public override void Receive(HttpContext context, WebSocketReceiveResult receiveResult, byte[] buffer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,6 +10,7 @@
     <Folder Include="Models\Entities\" />
     <Folder Include="Models\DTO\" />
     <Folder Include="Models\AdditionModels\" />
+    <Folder Include="CustomExeptions\" />
   </ItemGroup>
 
 </Project>
