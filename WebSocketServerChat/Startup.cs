@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Chat.Logic.Interfaces;
 using Chat.Logic.Manages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WebSocketServerChat.Midlewares;
 
 namespace WebSocketServerChat
 {
@@ -21,18 +23,13 @@ namespace WebSocketServerChat
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            //});
+            services.AddSingleton<WebSocketChatManager>();
+            services.AddTransient<IWebSocketConnectionManager,WebSocketConnectionManager>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
@@ -42,7 +39,7 @@ namespace WebSocketServerChat
 
             app.UseWebSockets();
             app.Map("/chat", builder =>
-               builder.UseMiddleware<WebSocketMiddleware>(serviceProvider.GetService<WebSocketChatManager>()));
+               builder.UseMiddleware<SocketMiddleware>(serviceProvider.GetService<WebSocketChatManager>()));
 
             app.UseMvc();
         }

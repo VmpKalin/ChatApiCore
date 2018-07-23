@@ -5,12 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\IEntities\" />
-    <Folder Include="Interfaces\IManages\" />
-    <Folder Include="Models\Entities\" />
-    <Folder Include="Models\DTO\" />
-    <Folder Include="Models\AdditionModels\" />
     <Folder Include="CustomExeptions\" />
+    <Folder Include="Interfaces\IManages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.0.0\ref\netcoreapp2.0\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

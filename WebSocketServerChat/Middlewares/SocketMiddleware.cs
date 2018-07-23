@@ -1,4 +1,5 @@
 ﻿using Chat.Logic.Manages;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,10 @@ namespace WebSocketServerChat.Midlewares
     public class SocketMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly WebSocketChatManager _webSocketManager;
+        private readonly WebSocketChatManagerBase _webSocketManager;
         private const int BufferSize = 4;
 
-        public SocketMiddleware(RequestDelegate next, WebSocketChatManager webSocketManager)
+        public SocketMiddleware(RequestDelegate next, WebSocketChatManagerBase webSocketManager)
         {
             _next = next;
             _webSocketManager = webSocketManager;
@@ -23,7 +24,7 @@ namespace WebSocketServerChat.Midlewares
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Path != "/ws"/* && !context.WebSockets.IsWebSocketRequest*/)
+            if (!context.WebSockets.IsWebSocketRequest)
             {
                 await _next(context);
                 return;
@@ -31,10 +32,11 @@ namespace WebSocketServerChat.Midlewares
 
             var socket = await context.WebSockets.AcceptWebSocketAsync();
 
-            var isAdded = _webSocketManager.AddSocket(socket);
+            var isAdded = await _webSocketManager.OnConnected(socket);
+
             if(!isAdded)
             {
-                throw new Exception();
+                throw new WebSocketException("Socket isn`t added");
             }
 
             await ReceiveAsync(context, socket);
@@ -42,7 +44,7 @@ namespace WebSocketServerChat.Midlewares
 
         private async Task ReceiveAsync(HttpContext context, WebSocket socket)
         {
-            var buffer = new byte[4 * 1024];
+            var buffer = new byte[BufferSize * 1024];
             var result = default(WebSocketReceiveResult);
 
             while (socket.State == WebSocketState.Open)
@@ -51,23 +53,23 @@ namespace WebSocketServerChat.Midlewares
 
                 if (result.MessageType == WebSocketMessageType.Close)
                 {
-                    if (!_webSocketManager.Remove(socket))
-                        throw new Exception("Error while removing socket");
+                    if (!_webSocketManager.OnDisconnected(socket))
+                        throw new WebSocketException("Error while removing socket");
                     break;
                 }
                 else
-                    _webSocketManager.Receive(context, result, buffer);
+                    _webSocketManager.Receive(socket, result, buffer);
             }
 
             await socket.CloseAsync(result.CloseStatus.Value, "Socket`s closed successfully", CancellationToken.None);
         }
     }
 
-    public static class HttpStatusCodeExceptionMiddlewareExtensions
+    public static class WebSocketMiddlewareExtensions
     {
-        public static IApplicationBuilder UseHttpStatusCodeExceptionMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseHttpStatusCodeExceptionMiddleware(this IApplicationBuilder builder, PathString path, WebSocketChatManagerBase handler)
         {
-            return builder.UseMiddleware<HttpStatusCodeExceptionMiddleware>();
+            return builder.Map(path,(app) => app.UseMiddleware<SocketMiddleware>(handler));
         }
     }
 }
