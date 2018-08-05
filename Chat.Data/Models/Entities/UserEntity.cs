@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using Chat.Data.Models.DTO;
 
 namespace Chat.Data.Models.Entities
 {
@@ -14,24 +15,41 @@ namespace Chat.Data.Models.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        public string FirstName { get; set; }
+        public string FName { get; set; }
 
-        public string LastName { get; set; }
-
-        public int Age { get; set; }
+        public string LName { get; set; }
 
         public string Email { get; set; }
 
+        public string Password { get; set; }
 
-        public List<string> Friends { get; set; } = new List<string>();
+        public string Login { get; set; }
 
+        public int Age { get; set; }
 
-        public UserEntity(string firstName, string lastName, int age, string email)
+        public UserEntity(UserCreateRequest model)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Age = age;
+            FName = model.FName;
+            LName = model.LName;
+            Email = model.Email;
+            Password = model.Password;
+            Login = model.Login;
+            Age = model.Age;
+        }
+
+        public UserEntity()
+        {
+
+        }
+
+        public UserEntity(string fName, string lName, string email, string password, string login, int age)
+        {
+            FName = fName;
+            LName = lName;
             Email = email;
+            Password = password;
+            Login = login;
+            Age = age;
         }
     }
 }
