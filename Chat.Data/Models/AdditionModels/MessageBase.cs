@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Chat.Data.Models.Entities
+namespace Chat.Data.Models.AdditionModels
 {
     public class MessageBase : IJsonConvertable
     {

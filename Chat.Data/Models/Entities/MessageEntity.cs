@@ -9,22 +9,25 @@ using System.Text;
 
 namespace Chat.Data.Models.Entities
 {
-    public class MessageEntity : IMessageEntity, IJsonConvertable, IEntity<string>
+    public class MessageEntity : IMessageEntity, IEntity<string>, IJsonConvertable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        public string SenderId { get; set; }
-
-        public long Time { get; set; }
+        public DateTime Time { get; set; }
 
         public string Data { get; set; }
 
-        public bool IsPrivate { get; set; }
+        public RoomEntity RoomEntity { get; set; }
 
-        public string DestinationId { get; set; }
-
+        public MessageEntity(string data, DateTime time, RoomEntity roomEntity)
+        {
+            Id = Guid.NewGuid().ToString();
+            Time = time;
+            Data = data;
+            RoomEntity = roomEntity;
+        }
 
         public string ToJson() =>
             JsonConvert.SerializeObject(this);

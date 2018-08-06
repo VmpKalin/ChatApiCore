@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using Chat.Data.Models.AdditionModels;
+using Chat.Data.Models.DTO;
 using Chat.Data.Models.Entities;
 using Chat.Logic.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -13,9 +15,11 @@ namespace Chat.Logic.Manages
 {
     public class WebSocketChatManager : WebSocketChatManagerBase
     {
-        public WebSocketChatManager(IWebSocketConnectionManager manager) : base(manager)
-        {
+        private readonly IChatService _chatService;
 
+        public WebSocketChatManager(IWebSocketConnectionManager manager, IChatService chatService) : base(manager)
+        {
+            _chatService = chatService;
         }
 
         public override Task<bool> OnConnected(WebSocket socket)
@@ -39,13 +43,10 @@ namespace Chat.Logic.Manages
             {
                 case Data.Models.AdditionModels.SocketMessageType.MessageType:
                     {
-                        var model = DeserializeBaseMessage<MessageEntity>(baseMessage);
+                        var model = DeserializeBaseMessage<MessageDTO>(baseMessage);
                         
                         UserMessageHandler(model, socket);
                     }
-                    break;
-                case Data.Models.AdditionModels.SocketMessageType.SingInType:
-                        DeserializeBaseMessage<MessageEntity>(baseMessage);
                     break;
                 case Data.Models.AdditionModels.SocketMessageType.ServerInfo:
                         DeserializeBaseMessage<MessageEntity>(baseMessage);
@@ -58,20 +59,31 @@ namespace Chat.Logic.Manages
 
         }
 
-        public async void UserMessageHandler(MessageEntity model, WebSocket socket)
+        public async void UserMessageHandler(MessageDTO model, WebSocket socket)
         {
             var isSocketExist = SocketManager.GetId(socket);
 
-            var DestinationId = String.Empty;
-
-            if(String.IsNullOrEmpty(isSocketExist))
+            if (String.IsNullOrEmpty(isSocketExist))
             {
                 await SendMessage("Bad request", socket);
             }
 
-            var socketDestination = SocketManager.GetSocket(model.DestinationId);
+            var DestinationId = String.Empty;
 
-            await SendMessage(model.Data, socketDestination);
+
+            var isAdded = await _chatService.SaveMessageAsync(model);
+
+            if(!isAdded)
+            {
+                await SendMessage("Bad request", socket);
+            }
+
+            var socketTo = SocketManager.GetSocket(model.UserIdTo);
+
+            if (socketTo != null)
+            {
+                await SendMessage(model.Data, socketTo);
+            }
         }
 
         public T DeserializeBaseMessage<T>(MessageBase model) where T : class

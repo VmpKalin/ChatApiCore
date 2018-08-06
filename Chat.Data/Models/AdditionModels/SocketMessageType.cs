@@ -7,7 +7,6 @@ namespace Chat.Data.Models.AdditionModels
     public enum SocketMessageType
     {
         MessageType,
-        SingInType,
         ServerInfo
     }
 }

@@ -17,5 +17,9 @@ namespace Chat.Data.Context
         }
 
         public DbSet<UserEntity> Users { get; set; }
+
+        public DbSet<MessageEntity> Messages { get; set; }
+
+        public DbSet<RoomEntity> ChatRooms { get; set; }
     }
 }

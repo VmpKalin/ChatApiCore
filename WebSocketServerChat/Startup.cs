@@ -69,6 +69,7 @@ namespace WebSocketServerChat
             });
             services.AddSingleton<WebSocketChatManager>();
             services.AddTransient<IWebSocketConnectionManager,WebSocketConnectionManager>();
+            services.AddTransient<IChatService, ChatService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
