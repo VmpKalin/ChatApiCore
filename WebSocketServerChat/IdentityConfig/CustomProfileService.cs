@@ -25,7 +25,14 @@ namespace WebSocketServerChat.IdentityConfig
         {
             var sub = context.Subject.GetSubjectId();
 
-            var user = await _userRepository.FindUserById(context.Subject.GetSubjectId());
+            var responce = await _userRepository.FindUserById(context.Subject.GetSubjectId());
+
+            if(responce.Error!=null)
+            {
+                return;
+            }
+
+            var user = responce.Data;
 
             var claims = new List<Claim>
             {

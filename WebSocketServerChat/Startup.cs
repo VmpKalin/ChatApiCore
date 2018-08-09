@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using Chat.Data.Context;
 using Chat.Logic.Interfaces;
 using Chat.Logic.Manages;
@@ -13,8 +10,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using WebSocketServerChat.IdentityConfig;
 using WebSocketServerChat.Midlewares;
@@ -67,9 +62,12 @@ namespace WebSocketServerChat
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
-            services.AddSingleton<WebSocketChatManager>();
-            services.AddTransient<IWebSocketConnectionManager,WebSocketConnectionManager>();
-            services.AddTransient<IChatService, ChatService>();
+
+            services.AddTransient<IWebSocketConnectionManager, WebSocketConnectionManager>();
+            services.AddScoped<IChatService, ChatService>();
+            services.AddTransient<IPostService, PostService>();
+            services.AddTransient<ILikeService, LikeService>();
+            services.AddSingleton< WebSocketChatManager>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
@@ -87,7 +85,6 @@ namespace WebSocketServerChat
             app.UseHttpStatusCodeExceptionMiddleware();
             app.UseAuthentication();
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");

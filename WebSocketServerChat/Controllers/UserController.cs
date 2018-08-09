@@ -26,7 +26,7 @@ namespace WebSocketServerChat.Controllers
 
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] UserCreateRequest model)
+        public async Task<IActionResult> Register([FromBody] UserCreationRequest model)
         {
             if (!ModelState.IsValid)
             {
@@ -35,13 +35,30 @@ namespace WebSocketServerChat.Controllers
 
             var result = await _userService.CreateUser(model);
 
-            if (!result)
-                return BadRequest();
+            if (result.Error!=null)
+                return BadRequest(result);
 
-            return Ok();
+            return Ok(result.Data);
         }
 
-        
+
+        [HttpPost("CreateUserInfo/{userId}")]
+        public async Task<IActionResult> CreateUserInfo([FromRoute]string userId, [FromBody] UserInfoDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.AddUserInfo(userId,model);
+
+            if (result.Error!=null)
+                return BadRequest(result.Error);
+
+            return Ok(result.Data);
+        }
+
+
         [HttpGet("Autho")]
         [Authorize]
         public IActionResult GetAutho()
@@ -52,7 +69,7 @@ namespace WebSocketServerChat.Controllers
         [HttpDelete("Delete")]
         public async Task DeleteUsers()
         {
-            await _userService.DeleteUsers();
+            await _userService.EraseDb();
         }
 
 
@@ -64,9 +81,9 @@ namespace WebSocketServerChat.Controllers
 
 
         [HttpGet("All")]
-        public async Task<IEnumerable<UserEntity>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _userService.GetUsers();
+            return Ok(await _userService.GetUsers());
         }
 
         [Authorize]
@@ -75,9 +92,17 @@ namespace WebSocketServerChat.Controllers
         {
             var idFromClaims = User.Claims.Single(x => x.Properties.Values.Contains("sub")).Value;
 
-            var userInfo = await _userService.GetUsers(x => x.Id == idFromClaims);
+            if (string.IsNullOrEmpty(idFromClaims))
+                return BadRequest("Can`t find user id");
 
-            return Ok(userInfo);
+            var responce = await _userService.GetUser(x => x.Id == idFromClaims);
+
+            if (responce.Error != null)
+            {
+                return BadRequest(responce.Error);
+            }
+
+            return Ok(responce.Data);
         }
 
         [HttpGet("Claims")]

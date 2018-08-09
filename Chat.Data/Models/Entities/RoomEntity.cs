@@ -1,11 +1,16 @@
-﻿using System;
+﻿using Chat.Data.Models.Entities.UserModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Chat.Data.Models.Entities
 {
     public class RoomEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public UserEntity UserFrom { get; set; }

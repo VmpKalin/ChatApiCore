@@ -51,7 +51,7 @@ namespace WebSocketServerChat.IdentityConfig
                 {
                     ClientId = "ro.client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
+                    AccessTokenLifetime = 86400,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())

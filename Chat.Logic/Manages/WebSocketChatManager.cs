@@ -9,17 +9,18 @@ using Chat.Data.Models.DTO;
 using Chat.Data.Models.Entities;
 using Chat.Logic.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace Chat.Logic.Manages
 {
-    public class WebSocketChatManager : WebSocketChatManagerBase
+    public class WebSocketChatManager : WebSocketChatManagerBase 
     {
         private readonly IChatService _chatService;
 
-        public WebSocketChatManager(IWebSocketConnectionManager manager, IChatService chatService) : base(manager)
+        public WebSocketChatManager(IWebSocketConnectionManager manager, IServiceProvider serviceProvider) : base(manager)
         {
-            _chatService = chatService;
+            _chatService = serviceProvider.GetRequiredService<IChatService>();
         }
 
         public override Task<bool> OnConnected(WebSocket socket)
@@ -32,7 +33,7 @@ namespace Chat.Logic.Manages
             return base.OnDisconnected(socket);
         }
 
-        public async override void Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+        public override void Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
             var json = Encoding.UTF8.GetString(buffer, 0, result.Count);
 
@@ -49,7 +50,7 @@ namespace Chat.Logic.Manages
                     }
                     break;
                 case Data.Models.AdditionModels.SocketMessageType.ServerInfo:
-                        DeserializeBaseMessage<MessageEntity>(baseMessage);
+                        //DeserializeBaseMessage<MessageEntity>(baseMessage);
                     break;
                 default:
 
@@ -68,15 +69,15 @@ namespace Chat.Logic.Manages
                 await SendMessage("Bad request", socket);
             }
 
-            var DestinationId = String.Empty;
+            var DestinationId = string.Empty;
 
 
-            var isAdded = await _chatService.SaveMessageAsync(model);
+            //var isAdded = await _chatService.SaveMessageAsync(model);
 
-            if(!isAdded)
-            {
-                await SendMessage("Bad request", socket);
-            }
+            //if(!isAdded)
+            //{
+            //    await SendMessage("Bad request", socket);
+            //}
 
             var socketTo = SocketManager.GetSocket(model.UserIdTo);
 

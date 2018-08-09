@@ -23,10 +23,14 @@ namespace Chat.Data.Models.Entities
 
         public MessageEntity(string data, DateTime time, RoomEntity roomEntity)
         {
-            Id = Guid.NewGuid().ToString();
             Time = time;
             Data = data;
             RoomEntity = roomEntity;
+        }
+
+        public MessageEntity()
+        {
+                
         }
 
         public string ToJson() =>

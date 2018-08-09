@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Chat.Data.Models.Entities;
+using Chat.Data.Models.Entities.UserModels;
 
 namespace Chat.Data.Models.DTO
 {
-    public class UserCreateRequest
+    public class UserDTO
     {
         [MaxLength(15, ErrorMessage = "FirstName can`t be bigger than 15 chars")]
         public string FName { get; set; }
@@ -18,13 +20,19 @@ namespace Chat.Data.Models.DTO
         public string Email { get; set; }
 
         [Required]
-        public string Password { get; set; }
-
-        [Required]
         public string Login { get; set; }
 
-        [Required]
-        [Range(18, 99, ErrorMessage = "Age must be from 18 to 99 years")]
-        public int Age { get; set; }
+        public UserDTO(UserEntity model)
+        {
+            FName = model.FirstName;
+            LName = model.LastName;
+            Email = model.Email;
+            Login = model.Login;
+        }
+
+        public UserDTO()
+        {
+            
+        }
     }
 }
