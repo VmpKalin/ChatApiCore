@@ -23,9 +23,9 @@ namespace Chat.Logic.Manages
             _context = context;
         }
 
-        public async Task<Responce<OperationResult>> CreateUser(UserCreationRequest model)
+        public async Task<Response<OperationResult>> CreateUser(UserCreationRequest model)
         {
-            var responce = new Responce<OperationResult>
+            var responce = new Response<OperationResult>
             {
                 Data = OperationResult.Failed
             };
@@ -52,9 +52,9 @@ namespace Chat.Logic.Manages
             return responce;
         }
 
-        public async Task<Responce<UserEntity>> FindUserById(string id)
+        public async Task<Response<UserEntity>> FindUserById(string id)
         {
-            var responce = new Responce<UserEntity>();
+            var responce = new Response<UserEntity>();
 
             responce.Data = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -66,18 +66,18 @@ namespace Chat.Logic.Manages
             return responce;
         }
 
-        public async Task<Responce<List<UserEntity>>> GetUsers()
+        public async Task<Response<List<UserEntity>>> GetUsers()
         {
-            var responce = new Responce<List<UserEntity>>();
+            var responce = new Response<List<UserEntity>>();
 
             responce.Data = await _context.Users.Include(x=>x.Posts).Include(x=>x.UserInfo).ToListAsync();
 
             return responce;
         }
 
-        public async Task<Responce<UserEntity>> GetUser(Expression<Func<UserEntity, bool>> predicate)
+        public async Task<Response<UserEntity>> GetUser(Expression<Func<UserEntity, bool>> predicate)
         {
-            var responce = new Responce<UserEntity>();
+            var responce = new Response<UserEntity>();
 
             responce.Data = await _context.Users.Include(x => x.Posts).Include(x => x.UserInfo).FirstOrDefaultAsync(predicate);
 
@@ -136,9 +136,9 @@ namespace Chat.Logic.Manages
             return _context.Users.FirstOrDefaultAsync(x => x.Login.Equals(login, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task<Responce<OperationResult>> AddUserInfo(string userId, UserInfoDTO model)
+        public async Task<Response<OperationResult>> AddUserInfo(string userId, UserInfoDTO model)
         {
-            var responce = new Responce<OperationResult>()
+            var responce = new Response<OperationResult>()
             {
                 Data = OperationResult.Failed
             };

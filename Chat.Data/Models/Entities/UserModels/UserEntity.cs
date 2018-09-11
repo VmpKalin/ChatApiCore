@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Chat.Data.Models.DTO;
+using Chat.Data.Models.Entities.Comunity;
 
 namespace Chat.Data.Models.Entities.UserModels
 {
@@ -26,7 +27,7 @@ namespace Chat.Data.Models.Entities.UserModels
         public string Password { get; set; }
 
         public UserInfoEntity UserInfo { get; set; }
-        
+
         public ICollection<PostEntity> Posts { get; set; } = new List<PostEntity>();
 
         public UserEntity(UserCreationRequest model)

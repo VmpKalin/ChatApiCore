@@ -11,8 +11,8 @@ namespace Chat.Logic.Interfaces
 {
     public interface ILikeService
     {
-        Task<Responce<LikeAction>> CreateLike(string postId, string userLikeFromId);
+        Task<Response<LikeAction>> CreateLike(string postId, string userLikeFromId);
 
-        Task<Responce<LikeDTO>> GetLikesByPostId(string postId);
+        Task<Response<LikeDTO>> GetLikesByPostId(string postId);
     }
 }

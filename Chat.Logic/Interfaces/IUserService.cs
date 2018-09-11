@@ -12,19 +12,19 @@ namespace Chat.Logic.Interfaces
 {
     public interface IUserService
     {
-        Task<Responce<OperationResult>> CreateUser(UserCreationRequest model);
+        Task<Response<OperationResult>> CreateUser(UserCreationRequest model);
 
-        Task<Responce<OperationResult>> AddUserInfo(string userId, UserInfoDTO model);
+        Task<Response<OperationResult>> AddUserInfo(string userId, UserInfoDTO model);
 
-        Task<Responce<UserEntity>> FindUserById(string id);
+        Task<Response<UserEntity>> FindUserById(string id);
 
         Task<UserEntity> FindByUsername(string login);
 
         Task<bool> ValidateCredentials(string username, string password);
 
-        Task<Responce<List<UserEntity>>> GetUsers();
+        Task<Response<List<UserEntity>>> GetUsers();
 
-        Task<Responce<UserEntity>> GetUser(Expression<Func<UserEntity,bool>> predicate);
+        Task<Response<UserEntity>> GetUser(Expression<Func<UserEntity,bool>> predicate);
 
         Task EraseDb();
     }

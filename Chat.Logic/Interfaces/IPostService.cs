@@ -10,10 +10,10 @@ namespace Chat.Logic.Interfaces
 {
     public interface IPostService
     {
-        Task<Responce<PostEntity>> GetPostById(string id);
+        Task<Response<PostEntity>> GetPostById(string id);
 
-        Task<Responce<List<PostEntity>>> GetPostByUserId(string userId);
+        Task<Response<List<PostEntity>>> GetPostByUserId(string userId);
 
-        Task<Responce<OperationResult>> CreatePost(PostDTO model);
+        Task<Response<OperationResult>> CreatePost(PostDTO model);
     }
 }

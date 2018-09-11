@@ -22,9 +22,9 @@ namespace Chat.Logic.Manages
             _context = context;
         }
 
-        public async Task<Responce<List<PostEntity>>> GetPostByUserId(string userId)
+        public async Task<Response<List<PostEntity>>> GetPostByUserId(string userId)
         {
-            var responce = new Responce<List<PostEntity>>();
+            var responce = new Response<List<PostEntity>>();
 
             var posts = await _context.Posts.Where(x => x.UserEntityId == userId).ToListAsync();
 
@@ -39,9 +39,9 @@ namespace Chat.Logic.Manages
         }
 
         // GET: api/Post/5
-        public async Task<Responce<PostEntity>> GetPostById(string id)
+        public async Task<Response<PostEntity>> GetPostById(string id)
         {
-            var responce = new Responce<PostEntity>();
+            var responce = new Response<PostEntity>();
 
             var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -56,9 +56,9 @@ namespace Chat.Logic.Manages
             return responce;
         }
 
-        public async Task<Responce<OperationResult>> CreatePost(PostDTO model)
+        public async Task<Response<OperationResult>> CreatePost(PostDTO model)
         {
-            var responce = new Responce<OperationResult>();
+            var responce = new Response<OperationResult>();
 
             var entity = new PostEntity(model);
 

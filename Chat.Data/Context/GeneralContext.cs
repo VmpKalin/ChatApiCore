@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Chat.Data.Models.Entities;
+using Chat.Data.Models.Entities.Comunity;
 using Chat.Data.Models.Entities.LikeModels;
 using Chat.Data.Models.Entities.UserModels;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,8 @@ namespace Chat.Data.Context
         }
 
         public DbSet<UserEntity> Users { get; set; }
+
+        public DbSet<ComunityEntity> Comunities { get; set; }
 
         public DbSet<UserInfoEntity> UsersInfo { get; set; }
 

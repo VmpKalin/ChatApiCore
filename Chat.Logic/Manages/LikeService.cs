@@ -23,9 +23,9 @@ namespace Chat.Logic.Manages
             _context = context;
         }
 
-        public async Task<Responce<LikeDTO>> GetLikesByPostId(string postId)
+        public async Task<Response<LikeDTO>> GetLikesByPostId(string postId)
         {
-            var responce = new Responce<LikeDTO>();
+            var responce = new Response<LikeDTO>();
 
             var post = await _context.Posts.Include(x => x.LikeInfo)
                                            .ThenInclude(x => x.LikeBindings)
@@ -42,9 +42,9 @@ namespace Chat.Logic.Manages
             return responce;
         }
 
-        public async Task<Responce<LikeAction>> CreateLike(string postId, string userLikeFromId)
+        public async Task<Response<LikeAction>> CreateLike(string postId, string userLikeFromId)
         {
-            var responce = new Responce<LikeAction>();
+            var responce = new Response<LikeAction>();
 
             var likeInfo = await _context.Likes.Include(x => x.LikeBindings).FirstOrDefaultAsync(x => x.ModuleId == postId);
 

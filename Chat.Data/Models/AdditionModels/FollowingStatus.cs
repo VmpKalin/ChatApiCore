@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Chat.Data.Models.AdditionModels
 {
-    public class Response<T>
+    public enum FollowingStatus
     {
-        public T Data { get; set; }
-
-        public Error Error { get; set; }
+        Pending,
+        Rejected,
+        Accepted
     }
 }
